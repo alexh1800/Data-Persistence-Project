@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text bestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -22,6 +24,16 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        //Set the Best Score Text at start
+        setBestScoreText();
+
+        //Set the Current score text on main game start so it includes the Username
+        AddPoint(0);
+
+
+
+
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -65,11 +77,18 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"{PersistentManager.instance.Username} Score : {m_Points}";
+    }
+
+    void setBestScoreText()
+    {
+        bestScoreText.text = $"Best Score: {PersistentManager.instance.BestScorer} : {  PersistentManager.instance.BestScore}";
     }
 
     public void GameOver()
     {
+        PersistentManager.instance.SubmitScore(PersistentManager.instance.Username, m_Points);
+
         m_GameOver = true;
         GameOverText.SetActive(true);
     }
