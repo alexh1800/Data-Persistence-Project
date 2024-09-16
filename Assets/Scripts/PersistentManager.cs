@@ -58,6 +58,11 @@ public class PersistentManager : MonoBehaviour
         if (score > BestScore)
         {
 
+            //set our persistent variables to the new best scorer and score so that the new info is reflected everywhere
+            BestScorer = scorer;
+            BestScore = score;
+
+            //create a new save data object
             SaveData data = new SaveData();
 
             data.bestScorer = scorer;
@@ -70,6 +75,8 @@ public class PersistentManager : MonoBehaviour
             //save the data to a file
             File.WriteAllText(Application.persistentDataPath + "/savefile.json", saveJson);
 
+            
+
 
         }
         
@@ -79,6 +86,8 @@ public class PersistentManager : MonoBehaviour
     private void LoadData()
     {
         string savePath = Application.persistentDataPath + "/savefile.json";
+
+        Debug.Log(savePath);
 
 
         //See if file exists and retrieve it
